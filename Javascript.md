@@ -97,3 +97,33 @@ B()
 参考答案：
 首先代码操作有同步操作与异步操作，异步操作分为宏任务与微任务，我们可以把主线程的同步操作看成是刚从任务队列取出的宏任务，假如它的执行过程中产生了宏任务与微任务，它会把宏任务添加进任务队列，微任务添加进微任务队列，当代码执行完之后，就会取出所有的微任务队列执行。接着取出任务队列中的第一个宏任务，重复上面的操作。
 
+## js中的基础数据类型有哪些
+
+参考答案：
+js中的基础数据类型有 number、string、boolean、null、undefined、symbol、bigint
+
+## Symbol的用途是什么
+
+参考答案：Symbol 是 ES6 引入的一种新的 原始数据类型，用于创建 唯一且不可变的标识符。它的出现主要是为了解决对象属性名冲突的问题，并支持更底层的语言能力（自定义对象的行为，如通过Symbol.iterator 让一个普通对象变得“可迭代”）。
+
+```js
+const myObj = {
+  data: [1, 2, 3],
+  [Symbol.iterator]() {
+    let i = 0;
+    const arr = this.data;
+    return {
+      next() {
+        return i < arr.length
+          ? { value: arr[i++], done: false }
+          : { done: true };
+      }
+    };
+  }
+};
+
+for (const x of myObj) {
+  console.log(x);
+}
+// 输出：1, 2, 3
+```
