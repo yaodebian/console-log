@@ -127,3 +127,16 @@ for (const x of myObj) {
 }
 // 输出：1, 2, 3
 ```
+
+## 什么是长任务（long task），一般你又是怎么解决的？
+
+某个任务持续时间超过 50ms，就被称为长任务（long task）。长任务可以是js任务、样式计算、布局、绘制、合成等。
+
+当遇到长任务时，一般我们可以从几个方向去解决：
+- 拆分大任务 → 用 requestIdleCallback 分批执行后台任务或者一些低优先级任务，用 requestAnimationFrame 分批执行渲染任务；
+- 多线程执行 → 可以放入 Web Worker 去并发执行一些密集型任务；
+- 虚拟滚动（Virtual Scrolling）→ 当列表或网格非常长时，只渲染可见区域的内容，而不是全部渲染，从而提高性能。
+- 分片渲染（Chunk Rendering）→ 如果数据量不是特别大（比如几千条），可以不用虚拟滚动，而采用 任务分片（chunk）。也就是每一帧只渲染一部分，利用空闲时间分批插入 DOM。。
+- 代码优化 → 减少不必要的循环、DOM 操作、样式重排等。
+
+可以通过用 PerformanceObserver 来监听 longtask。
