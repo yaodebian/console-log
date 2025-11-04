@@ -136,7 +136,9 @@ for (const x of myObj) {
 - 拆分大任务 → 用 requestIdleCallback 分批执行后台任务或者一些低优先级任务，用 requestAnimationFrame 分批执行渲染任务；
 - 多线程执行 → 可以放入 Web Worker 去并发执行一些密集型任务；
 - 虚拟滚动（Virtual Scrolling）→ 当列表或网格非常长时，只渲染可见区域的内容，而不是全部渲染，从而提高性能。
-- 分片渲染（Chunk Rendering）→ 如果数据量不是特别大（比如几千条），可以不用虚拟滚动，而采用 任务分片（chunk）。也就是每一帧只渲染一部分，利用空闲时间分批插入 DOM。。
+- 分片渲染（Chunk Rendering）→ 如果数据量不是特别大（比如几千条），可以不用虚拟滚动，而采用 任务分片（chunk）。也就是每一帧只渲染一部分，利用空闲时间分批插入 DOM。
 - 代码优化 → 减少不必要的循环、DOM 操作、样式重排等。
 
 可以通过用 PerformanceObserver 来监听 longtask。
+
+## 
