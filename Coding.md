@@ -153,6 +153,45 @@ const finalList03 = list.reduce((accumulator, currentValue)  => {
 console.log(finalList03)
 ```
 
+## 给出一个数字数组 [0, 1, 2, 3, 4]，请计算数组中所有项的和？
+
+方法一：
+```js
+function sum (arr) {
+  let res = 0
+  for (let i = 0; i < arr.length; i++) {
+    res += arr[i]
+  }
+  return res
+}
+
+console.log(sum([1, 2, 3, 4])) // 10
+```
+
+方法二：（使用高阶函数 Array.prototype.reduce）
+
+```js
+// 不设置初始值时，reduce 方法会从索引 1 开始执行回调函数，将索引 0 的值作为初始值
+function sum (arr) {
+  return arr.reduce((accumulator, currentValue, currentIndex, array) => {
+    return accumulator + currentValue
+  })
+}
+
+console.log(sum([1, 2, 3, 4])) // 10
+```
+
+```js
+// 设置初始值时，reduce 方法会从索引 0 开始执行回调函数，将初始值作为累加器的初始值
+function sum (arr) {
+  return arr.reduce((accumulator, currentValue, currentIndex, array) => {
+    return accumulator + currentValue
+  }, 0)
+}
+
+console.log(sum([1, 2, 3, 4])) // 10
+```
+
 ## 实现一个简单的柯理化函数
 
 ```js
