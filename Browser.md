@@ -1,5 +1,15 @@
 # Browser Series
 
+## 浏览器的存储方式有哪些？
+
+目前主流浏览器的几种存储方式有：cookie、sessionStorage、localStorage、IndexedDB
+这几种存储方式的区别：
+- 存储限制：cookie 的大小限制为 4KB（很多浏览器会限制一个网址最多保存20个cookie），sessionStorage 和 localStorage 为 5M，IndexedDB 理论上来说没有限制（一般来说不会小于 250 M）;
+- 生命周期：cookie 可以设置过期时间 Expires 或有效期 Max-Age，默认一关闭浏览器窗口就失效，sesionStorage 和 localStorage 不能设置有效期或者过期时间，sesionStorage 一关闭会话就会被清理，localStorage 如何不手动清理就会一直存在，IndexedDB 同样是除非手动清理，否则一直存在；
+- 与服务端通信：cookie 会存在于每次请求的 header 中，其他三个则只会存在于客户端；
+
+![](./assets/Javascript/browser-storage.png)
+
 ## 在浏览器地址栏输入 url 到浏览器页面渲染的过程中发生了什么？
 
 - 查找缓存，有缓存则直接返回缓存；
