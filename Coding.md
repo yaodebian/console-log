@@ -207,3 +207,38 @@ function curry(fn) {
   }
 }
 ```
+
+## 实现一个支持占位符的柯里化函数
+
+演示案例：
+```js
+function join(a, b, c) {
+  return `${a}_${b}_${c}`
+}
+const curriedJoin = curry(join)
+const _ = curry.placeholder
+curriedJoin(1, 2, 3) // '1_2_3'
+curriedJoin(_, 2)(1, 3) // '1_2_3'
+curriedJoin(_, _, _)(1)(_, 3)(2) // '1_2_3'
+```
+
+参考解法：
+```js
+function curry(fn) {
+  const context = this
+  return function curried(...args) {
+    const isComplete = args.length >= fn.length && !args.slice(0, fn.length).includes(curry.placeholder)
+    if (isComplete) {
+      return fn.apply(context, args)
+    }
+    return function (...restArgs) {
+      const argList = args.map(item => {
+        return item === curry.placeholder && restArgs.length 
+          ? restArgs.shift()
+          : item
+      })
+      return curried.apply(context, argList.concat(restArgs))
+    }
+  }
+}
+```
