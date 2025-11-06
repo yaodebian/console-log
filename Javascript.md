@@ -159,17 +159,6 @@ Object.defineProperty 的触发点在原本的对象上，而 Proxy 的触发点
 **中间态操作：**
 Object.defineProperty 的 set 和 get 不能直接操作原有对象，需要通过一个中间状态来进行存储，否则会导致无限循环。而 Proxy 则没有这个问题，因为它的触发点在 Proxy 实例上，而不是在原有对象上。
 
-## 为什么 Vue 3 放弃 Object.defineProperty 改用 Proxy？
-
-1. Object.defineProperty 只能监听已有属性，新增或删除属性时需要手动处理；
-2. 对数组下标变化无法劫持；
-3. 深层对象需要递归遍历所有属性，初始化成本高；
-4. Proxy 可以懒代理（访问到子对象时再代理），性能更优；
-5. Proxy 可以监听更多类型的操作，如删除属性、获取键名等。
-
-**简答模板：**
-因为 Proxy 功能更全面、性能更好，且能天然支持数组和深层对象，所以 Vue 3 用它替代了 Object.defineProperty。
-
 ## 为什么 Object.defineProperty 的 get/set 容易造成死循环？
 
 Object.defineProperty 的触发点在原本的对象上，如果在set或者get的callback里面直接操作原本的对象，就会再次触发set和get。
@@ -208,4 +197,3 @@ const proxy = deepProxy({ a: { b: { c: 1 } } })
 proxy.a.b.c       // get a → get b → get c
 proxy.a.b.c = 2   // get a → get b → set c to 2
 ```
-
