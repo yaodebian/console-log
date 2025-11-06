@@ -146,3 +146,66 @@ for (const x of myObj) {
 通俗来讲就是：只传递给函数一部分参数来调用它，让它返回一个函数去处理剩下的参数。我们把这样的一种编程思想称之为函数柯里化。
 
 函数柯里化可以用来干嘛呢？比较典型的场景是参数复用：先传递部分参数生成一个新函数，这个新函数可以多处复用，这种常常在一些计算方面会用到。
+
+## 说说 Object.defineProperty 与 Proxy 的区别
+
+**覆盖面上：**
+Object.defineProperty 是基于属性级别的劫持，只能监听 get 和 set，而且只能作用于已存在的属性；
+Proxy 是对象级别的代理，可以拦截包括 get、set、has、deleteProperty 等在内的所有语言级操作，并且可以通过递归实现深层监听。
+
+**触发时机：**
+Object.defineProperty 的触发点在原本的对象上，而 Proxy 的触发点在 Proxy 实例上。
+
+**中间态操作：**
+Object.defineProperty 的 set 和 get 不能直接操作原有对象，需要通过一个中间状态来进行存储，否则会导致无限循环。而 Proxy 则没有这个问题，因为它的触发点在 Proxy 实例上，而不是在原有对象上。
+
+## 为什么 Vue 3 放弃 Object.defineProperty 改用 Proxy？
+
+1. Object.defineProperty 只能监听已有属性，新增或删除属性时需要手动处理；
+2. 对数组下标变化无法劫持；
+3. 深层对象需要递归遍历所有属性，初始化成本高；
+4. Proxy 可以懒代理（访问到子对象时再代理），性能更优；
+5. Proxy 可以监听更多类型的操作，如删除属性、获取键名等。
+
+**简答模板：**
+因为 Proxy 功能更全面、性能更好，且能天然支持数组和深层对象，所以 Vue 3 用它替代了 Object.defineProperty。
+
+## 为什么 Object.defineProperty 的 get/set 容易造成死循环？
+
+Object.defineProperty 的触发点在原本的对象上，如果在set或者get的callback里面直接操作原本的对象，就会再次触发set和get。
+而Proxy的触发点在Proxy实例上，在拦截到并进行原始对象的操作时，就不会再次触发了。
+
+## Proxy 能实现“深层代理”吗？怎么实现？
+
+- Proxy 默认只拦截第一层；
+- 可以在 get 时判断返回值是否是对象；
+- 若是对象，则再返回一个新的 Proxy，实现 递归代理（或懒代理）。
+
+具体实现如下：
+
+```js
+function deepProxy(target) {
+  if (typeof target !== 'object' || target === null) {
+    return target
+  }
+  return new Proxy(target, {
+    get(target, key) {
+      const value = target[key]
+      // do something here
+      console.log(`get ${key}`)
+      return deepProxy(value) // ✅ 懒递归
+    },
+    set(target, key, value) {
+      // do something here
+      console.log(`set ${key} to ${value}`)
+      target[key] = value // ✅ 懒递归
+      return true
+    }
+  })
+}
+
+const proxy = deepProxy({ a: { b: { c: 1 } } })
+proxy.a.b.c       // get a → get b → get c
+proxy.a.b.c = 2   // get a → get b → set c to 2
+```
+
