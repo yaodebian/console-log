@@ -214,7 +214,7 @@ proxy.a.b.c = 2   // get a → get b → set c to 2
 
 Tree Shaking 与 代码拆分（Code Splitting）支持：
 - CommonJS 没有静态分析，所以不支持
-- ES Module 在编译时进行静态分析，所以支持 Tree Shaking
+- ES Module 在编译时进行静态分析，所以支持 Tree Shaking 和 Code Splitting
 
 模块This
 - CommonJS 中，每个模块都有自己的 this 指向，这个 this 指向的是module.exports对象
