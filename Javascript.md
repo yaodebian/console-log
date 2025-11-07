@@ -197,3 +197,26 @@ const proxy = deepProxy({ a: { b: { c: 1 } } })
 proxy.a.b.c       // get a → get b → get c
 proxy.a.b.c = 2   // get a → get b → set c to 2
 ```
+
+## CommonJS 与 ES Module 的区别
+
+语法不同：
+- CommonJS 通过 module.exports 导出模块，通过 require 引入模块；
+- ES Module 通过 export 导出模块，通过 import 引入模块。
+
+加载方式：
+- CommonJS 
+  - 在运行时同步加载模块
+  - 它的加载是动态的，可以在块级作用域内使用
+- ES Module
+  - 在编译时进行静态分析，解析module graph，之后基于graph深度优先遍历的方式提前加载并执行module，然后再开始执行非import的代码。同时，它相比 CommonJs，支持异步加载（`import()`）
+  - import标识符的加载是静态的，不能在块级作用域内使用，强制在模块顶部使用。
+
+Tree Shaking 与 代码拆分（Code Splitting）支持：
+- CommonJS 没有静态分析，所以不支持
+- ES Module 在编译时进行静态分析，所以支持 Tree Shaking
+
+模块This
+- CommonJS 中，每个模块都有自己的 this 指向，这个 this 指向的是module.exports对象
+- ES Module 在严格模式下运行，所以 this 指向 undefined
+
