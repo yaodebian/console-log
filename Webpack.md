@@ -743,3 +743,29 @@ cache: {
 此外我也经常配合 babel-loader、vue-loader、postcss-loader 这一套来保证兼容性和样式自动前缀。
 最后，如果要分析包体积，我会用 WebpackBundleAnalyzer，它能很直观地看到每个模块的大小和依赖关系，对后续的拆包调整特别有帮助。
 
+### webpack dev server 底层是如何存储和提供资源的
+
+首先要了解一个点，资源文件在开发环境都是存储在内存当中的。这里，就有一个问题，如何存储到内存中？
+
+其实很简单，通过map等数据结构来存储和读取，模拟一个文件操作系统，比如key就是一个path，对应的值就是文件的内容。
+
+知道了这个，就很好理解了，dev server 提供一个代理服务，浏览器通过请求来触发文件系统的读取操作，并进行渲染。
+
+### webpack 可以在 dev server 中做到类似 vite 的按需编译吗？
+
+答案是可以的。
+
+可以基于 webpack5 的实验属性：
+
+```js
+experiments: {
+  lazyCompilation: {
+    imports: true,
+    entries: false
+  }
+}
+```
+
+搭配 cache.type 设置 fileSystem ，整个开发环境编译耗时会有比较大的提升。
+
+
