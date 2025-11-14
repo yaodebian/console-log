@@ -146,3 +146,45 @@ type MyRecord<K extends ValidKeyType, V> = {
 }
 ```
 
+## 请自己实现一个 Pick<T, K> ，顾名思义，通过从 T 中选取 K 中的属性来返回一个新类型。
+
+示例：
+
+```ts
+type Foo = {
+  a: string
+  b: number
+  c: boolean
+}
+type A = MyPick<Foo, 'a' | 'b'> // {a: string, b: number}
+type B = MyPick<Foo, 'c'> // {c: boolean}
+type C = MyPick<Foo, 'd'> // Error
+```
+
+实现：
+```ts
+type MyPick<T, K extends keyof T> = {
+  [P in K]: T[P]
+}
+```
+
+## 请自己实现一个 Omit<T, K> ，通过选择 T 中的属性而不是 K 中的属性来返回新类型。
+
+示例：
+```ts
+type Foo = {
+  a: string
+  b: number
+  c: boolean
+}
+type A = MyOmit<Foo, 'a' | 'b'> // {c: boolean}
+type B = MyOmit<Foo, 'c'> // {a: string, b: number}
+type C = MyOmit<Foo, 'c' | 'd'>  // {a: string, b: number}
+```
+
+实现：
+```ts
+type MyOmit<T, K extends keyof any> = {
+  [P in keyof T as P extends K ? never : P]: T[P]
+}
+```
