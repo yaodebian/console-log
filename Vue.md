@@ -56,3 +56,8 @@ Vue3 整个源码是基于 ES Module 写的，天然支持 Tree-shaking，打包
 vue2 补充了两个方法来手动触发响应式更新：
 - Vue.set(target, index, value)
 - Vue.delete(target, index)
+
+## vue中，我们需要在循环渲染中绑定一个唯一key，为什么？
+
+使用 key 可以让 Vue 在进行 v-for 生成列表时准确识别每个节点的唯一身份。
+这样可以保证在数据变化时，Diff 算法不会错误复用旧 DOM，从而避免组件状态错位、输入框内容错乱、动画错误等问题。同时能提升更新效率，实现最小化 DOM 操作。
