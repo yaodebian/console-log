@@ -256,3 +256,9 @@ console.log(test.length) // 2
 应用场景上：
 - 函数防抖常用于搜索框输入只在用户停止的输入的时候触发。
 - 函数节流常用于滚动事件、resize事件、拖拽事件等场景。
+
+## setTimeout、Promise、Async/Await 的区别
+
+setTimeout 的回调是宏任务，用于延迟执行。
+Promise 通过 then、catch 等方法来处理异步操作的结果，这里面的回调时微任务。
+Async/Await 是基于 Promise 的语法糖，它可以让Promise的异步操作看起来像同步操作一样，代码管理更清晰。
