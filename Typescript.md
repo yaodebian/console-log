@@ -22,6 +22,25 @@ function f0(f1: (x: string) => number) {
 }
 ```
 
+## 请自己实现一个 Parameters <typeof f1> 它返回 f1 的参数类型元组。
+
+示例：
+
+```ts
+// 定义 f1
+function f1(x: string) {
+  return Number(x)
+}
+
+type F1Params = MyParameters<typeof f1> // [string]
+```
+
+实现：
+
+```ts
+type MyParameters<T extends (...args: any) => any> = T extends (...args: infer P) => any ? P : never
+```
+
 ## 请自己实现一个 Partial<T> ，它返回一个类型，该类型表示 T 类型的所有子集。
 
 示例：
