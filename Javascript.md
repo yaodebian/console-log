@@ -262,3 +262,10 @@ console.log(test.length) // 2
 setTimeout 的回调是宏任务，用于延迟执行。
 Promise 通过 then、catch 等方法来处理异步操作的结果，这里面的回调时微任务。
 Async/Await 是基于 Promise 的语法糖，它可以让Promise的异步操作看起来像同步操作一样，代码管理更清晰。
+
+## Async/Await 的实现原理是怎样的？
+
+async/await 本质上是 Promise 的语法糖。
+- 编译后的函数会直接返回一个Promise实例，这个实例初始化时会把原本函数中的逻辑包含进去。
+- 针对 await xxx 语法则是通过 Promise.resolve(xxx) 来实现，后续的代码执行则是包含在了 Promise.resolve(xxx).then 当中。
+- 关于 try ... catch ，他本身不能捕获异步任务的异常，而在 async/await 中可以，本质上也做了一层编译，即把try ... catch迁移到了 Promise.resolve(xxx).then 和 Promise.resolve(xxx).catch 当中。（所以说，并不是 try ... catch 能够捕获异步异常，而是进行了编译转换）
