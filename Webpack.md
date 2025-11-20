@@ -64,15 +64,15 @@ module.exports = {
 ### Webpack 打包的基本流程？
 
 **标准回答：**
-1. **初始化参数**：读取配置文件和 CLI 参数。  
-2. **解析入口**：从 Entry 开始递归解析依赖，通过 Loader 处理各类资源，生成 AST，分析模块间依赖关系，并生成 dependency graph 。  
+1. **初始化**：读取配置文件和 CLI 参数进行初始化。  
+2. **解析入口**：从 Entry 开始递归解析依赖，这里面会通过 Loader 处理各类资源，生成 AST，然后通过 AST 来分析模块间依赖关系，并生成 dependency graph 。
   - 基于 entry 生成 entryDependency
   - 基于 NormalModuleFactory 通过 dependency 生成对应的 Module 对象实例，并调用 build 方法
   - 根据 module 类型解析 loaders ，调用 LoaderRunner 进行模块转译
   - 模块转译后的结果，会通过**Acorn**解析器转换成AST语法树（webpack始终使用Acorn解析器，loader内部可能使用其他解析器作为中间转换层）
   - 分析AST语法树，提取出模块的依赖
   - 递归执行从 “NormalModuleFactory” 开始的流程，直到所有依赖都被解析
-3. **生成 Chunk**：根据依赖关系将模块划分为不同的 Chunk。
+3. **生成 Chunk**：根据依赖关系将模块划分为不同的 Chunk，并生成 Chunk Graph。
 4. **输出文件**：通过 Plugin 优化、压缩等，并输出到指定目录。
 
 ---
