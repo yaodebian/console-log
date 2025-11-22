@@ -76,7 +76,7 @@ vue2 补充了两个方法来手动触发响应式更新：
 
 ## 请简述一下 Vue 的数据双向绑定
 
-Vue的数据双向绑定，这里的双向是指 “数据变更触发视图渲染” 与 “视图变更触发数据变更”，它们分别是基于“Vue的响应式机制” 和 “dom事件触发” 来完成。这里说的 “dom事件” ，在 vue2 中是 input 事件，在vue3中是抛出 update:modelValue 来更新，这使得 Vue3 能够支持更多组件类型的数据双向绑定，同时 Vue3 也封装了一个 defineModel 的宏来方便你做这件事，同时也补充了一个 v-model 参数如 v-model:title 来自定义数据双向绑定的 props 。
+Vue的数据双向绑定，这里的双向是指 “数据变更触发视图渲染” 与 “视图变更触发数据变更”，它们分别是基于“Vue的响应式机制” 和 “事件触发” 来完成。这里说的 “事件触发” ，在 vue2 中是 input 事件，在vue3中是抛出 update:modelValue 来更新，这使得 Vue3 能够支持更多组件类型的数据双向绑定，同时 Vue3 也封装了一个 defineModel 的宏来方便你做这件事，同时也补充了一个 v-model 参数如 v-model:title 来自定义数据双向绑定的 props 。
 
 ## vue和react的区别
 
