@@ -103,3 +103,25 @@ Vue的数据双向绑定，这里的双向是指 “数据变更触发视图渲�
 当组件被切换走时，也不会执行 unmounted，而是调用 deactivated，将 DOM 节点从当前渲染树中卸载，但不销毁对应组件实例和 DOM 的引用。
 
 keep-alive 还通过 LRU 机制管理 max 大小，通过 include/exclude 匹配规则控制哪些组件被缓存。
+
+## Vue3 中 vue-router 有哪几种模式，分别有什么区别？原理是什么？
+
+Vue 3 的 `vue-router` 主要提供了三种路由模式：**Hash 模式**、**History 模式** 和 **Memory 模式**。这三种模式的核心区别在于 URL 的表现形式、底层依赖的 API 以及应用场景。
+
+**首先是 Hash 模式 (`createWebHashHistory`)**。
+它是基于 URL 的 hash (`#`) 符号实现的。
+- **原理**：利用 `window.location.hash` 读取和修改路由状态，并通过监听 `window.onhashchange` 事件来响应 URL 的变化。由于 hash 值的改变不会触发浏览器向服务器发送请求，因此它天生支持单页应用（SPA）的前端路由。
+- **特点**：兼容性极佳，且**无需服务器端进行任何特殊配置**。但 URL 中包含 `#` 号（如 `domain.com/#/home`），不够美观，且在 SEO 优化方面相对劣势。
+
+**其次是 History 模式 (`createWebHistory`)**。
+它是目前主流推荐的模式，基于 HTML5 的 History API 实现。
+- **原理**：利用 `history.pushState` 和 `history.replaceState` 方法在不重新加载页面的情况下修改 URL，并通过监听 `window.onpopstate` 事件来处理浏览器的前进/后退操作。
+- **特点**：URL 看起来像标准的路径（如 `domain.com/home`），更加美观且对 SEO 友好。
+- **注意**：该模式**必须要求服务器端进行配置**（如 Nginx 的 try_files），将所有未匹配的资源请求重定向到 `index.html`，否则用户刷新页面时会遭遇 404 错误。
+
+**最后是 Memory 模式 (`createMemoryHistory`)**。
+- **原理**：它将路由的历史记录完全维护在内存中的一个队列里，不与浏览器的 URL 地址栏同步。
+- **特点**：URL 不会随路由切换而变化，浏览器后退/前进按钮无效。它可以用于 **SSR（服务端渲染）** 或测试环境，以及某些不需要持久化 URL 的非浏览器环境。
+
+**总结**：在工程实践中，如果是常规的 Web 应用，首选 **History 模式** 以获得更好的体验和 SEO；如果受限于服务器权限无法配置重定向，则退而求其次选择 **Hash 模式**。
+
