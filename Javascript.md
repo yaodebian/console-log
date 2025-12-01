@@ -269,3 +269,11 @@ async/await 本质上是 Promise 的语法糖。
 - 编译后的函数会直接返回一个Promise实例，这个实例初始化时会把原本函数中的逻辑包含进去。
 - 针对 await xxx 语法则是通过 Promise.resolve(xxx) 来实现，后续的代码执行则是包含在了 Promise.resolve(xxx).then 当中。
 - 关于 try ... catch ，他本身不能捕获异步任务的异常，而在 async/await 中可以，本质上也做了一层编译，即把try ... catch迁移到了 Promise.resolve(xxx).then 和 Promise.resolve(xxx).catch 当中。（所以说，并不是 try ... catch 能够捕获异步异常，而是进行了编译转换）
+
+## 请简单谈谈你对AST的理解
+
+AST 本质上是“代码的语法结构树”。所有代码分析和代码转换工具——如 Babel、Webpack、ESLint、TS 编译器——都必须先把源码转成 AST 才能进行下一步工作。AST 让工具可以像理解数据结构一样理解你的代码，从而实现编译、优化、替换、检查等能力。
+
+## 请简单聊聊你对虚拟 DOM 的理解
+
+虚拟 DOM 是使用 JS 对 DOM 的抽象表示，它让框架能够在内存中完成DOM结构分析和 diff，只把最小变更同步到真实 DOM，从而获得更高的更新效率和更好的可维护性。
